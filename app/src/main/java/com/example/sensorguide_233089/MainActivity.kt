@@ -1,5 +1,5 @@
 package com.example.sensorguide_233089
-import android.annotation.SuppressLint
+
 import android.content.Context
 import android.graphics.Color
 import android.hardware.Sensor
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() , SensorEventListener {
     private var lightSensor: Sensor? = null
     private lateinit var rootView: RelativeLayout
     private lateinit var textView: TextView
-    private lateinit var imageView: ImageView
+    private lateinit var imageView: ImageView // Mover la inicialización aquí
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,23 +44,25 @@ class MainActivity : AppCompatActivity() , SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor?.type == Sensor.TYPE_LIGHT) {
             val lightValue = event.values[0]
-            if (lightValue < 60f) {
-                // Está oscuro
-                rootView.setBackgroundColor(Color.BLACK)
-                textView.setTextColor(Color.WHITE)
-                textView.text = "Está Oscuro"
-                imageView.setImageResource(R.drawable.imagen_oscuro)
-            } else {
-                // Hay luz
-                rootView.setBackgroundColor(Color.WHITE)
-                textView.setTextColor(Color.BLACK)
-                textView.text = "HAY LUZZZ"
-                imageView.setImageResource(R.drawable.imagen_claro)
+            when {
+                lightValue < 20f -> { // Muy oscuro
+                    rootView.setBackgroundColor(Color.BLACK)
+                    textView.setTextColor(Color.WHITE)
+                    textView.text = "Kawhi de visitante!"
+                    imageView.setImageResource(R.drawable.imagen_oscuro)
+                }
+
+                else -> { // Mucha luz
+                    rootView.setBackgroundColor(Color.WHITE)
+                    textView.setTextColor(Color.BLACK)
+                    textView.text = "Kawhi de local!"
+                    imageView.setImageResource(R.drawable.imagen_claro)
+                }
             }
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        return
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy:Int){
     }
+
 }
